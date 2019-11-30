@@ -1,0 +1,16 @@
+[[source]]
+url = "http://mirrors.aliyun.com/pypi/simple/"
+verify_ssl = false
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+pillow = ">=5.1.0"
+reportlab = ">=3.4.0"
+requests = ">=2.20.0"
+flask = "*"
+cachetools = "*"
+
+[requires]
+python_version = "3.7"
