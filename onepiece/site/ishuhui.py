@@ -177,9 +177,10 @@ class ComicBookCrawler(ComicBookCrawlerBase):
         data = cls.get_json(url)
         rv = []
         for item in data["data"]["data"]:
-            comicid = item["animeID"]
-            _name = item["title"]
-            cover_image_url = item["thumb"]
+            comicid = item.get('animeID')
+            _name = item.get('title')
+            # cover_image_url = item.get('thumb')
+            cover_image_url = item.get('animeThumb')
             source_url = "https://www.ishuhui.com/comics/anime/{}".format(comicid)
             search_result_item = SearchResultItem(site=cls.SITE,
                                                   name=_name,

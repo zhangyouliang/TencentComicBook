@@ -29,6 +29,7 @@ def handle_404(error):
 
 @app.route("/")
 def index():
+
     return jsonify(
         {
             "api_status": "ok",
@@ -41,11 +42,13 @@ def index():
                 "/comic/wangyi/5015165829890111936/933",
                 "/comic/u17/195",
                 "/comic/u17/195/274",
+                "/search?name=海贼王",
                 "/search/qq?name=海贼王",
                 "/search/wangyi?name=海贼王",
                 "/search/ishuhui?name=海贼王",
                 "/search/u17?name=雏蜂",
-            ]
+            ],
+            "sites": ComicBook.getTotalSite()
         }
     )
 
@@ -68,8 +71,9 @@ def get_chapter_info(site, comicid, chapter_number):
     return jsonify(chapter.to_dict())
 
 
+@app.route("/search")
 @app.route("/search/<site>")
-def search(site):
+def search(site=""):
     name = request.args.get('name')
     limit = request.args.get('limit', default=20, type=int)
     if not name:

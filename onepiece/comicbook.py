@@ -9,7 +9,7 @@ from .exceptions import SiteNotSupport
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 
-class ComicBook():
+class ComicBook(object):
     SUPPORT_SITE = frozenset(
         map(
             lambda x: x.split(".py")[0],
@@ -46,10 +46,19 @@ class ComicBook():
 
     @classmethod
     def search(cls, site, name, limit=None):
-        if site not in cls.SUPPORT_SITE:
-            raise SiteNotSupport("site={} 暂不支持".format(site))
-        module = importlib.import_module(".site.{}".format(site), __package__)
-        return module.ComicBookCrawler.search(name)[:limit]
+        if site == "":
+            sites = list(cls.SUPPORT_SITE)
+            data = list()
+            for site in sites:
+                module = importlib.import_module(".site.{}".format(site), __package__)
+                res = module.ComicBookCrawler.search(name)[:limit]
+                data = data + res
+            return filter(lambda x: x.name.find(name)!=-1,data)
+        else:
+            if site not in cls.SUPPORT_SITE:
+                raise SiteNotSupport("site={} 暂不支持".format(site))
+            module = importlib.import_module(".site.{}".format(site), __package__)
+            return module.ComicBookCrawler.search(name)[:limit]
 
     def to_dict(self):
         return self.comicbook_item.to_dict()
@@ -66,8 +75,18 @@ class ComicBook():
             self.chapter_db[chapter_number] = chapter
         return self.chapter_db[chapter_number]
 
+    @classmethod
+    def getTotalSite(cls):
+        sites = list(cls.SUPPORT_SITE)
+        res = dict()
+        for site in sites:
+            module = importlib.import_module(".site.{}".format(site), __package__)
+            sourceName = module.ComicBookCrawler.SOURCE_NAME
+            res[site] = sourceName
+        return res
 
-class Chapter():
+
+class Chapter(object):
 
     def __init__(self, comicbook_item, chapter_item):
         self.comicbook_item = comicbook_item

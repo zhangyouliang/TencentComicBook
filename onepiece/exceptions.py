@@ -13,6 +13,8 @@ class ComicbookNotFound(NotFoundError):
 class ChapterNotFound(NotFoundError):
     pass
 
+class ChapterSourceNotFound(NotFoundError):
+    pass
 
 class URLException(ComicbookException):
     pass

@@ -101,7 +101,10 @@ curl ${host}/comic/ishuhui/1/933
 请求示例
 
 ```sh
+# 仅搜索腾讯漫画网站
 curl "${host}/search/qq?name=海贼王&limit=20"
+# 搜索全部支持的网站
+curl "${host}/search?name=海贼王&limit=20"
 ```
 
 ```json
